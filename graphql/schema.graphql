@@ -1,18 +1,42 @@
-type Person{
-    id : Int!
-    name : String!
-    age : Int!
-    gender:String!
+# type Movie {
+#   id: Int!
+#   title: String!
+#   rating: Float!
+#   summary: String!
+#   language: String!
+#   medium_cover_image: String!
+# }
+
+# type Query{
+#     # # ! 는 required 라는 의미.
+#     # # 한 '사람'만 보내는게 아니라, 여러 '사람' 을 보내기 때문에 array 안에 넣는거다.
+#     # people : [Person]!
+#     # person(id : Int!) : Person
+
+#     movies(limit: Int, rating: Float): [Movie]!
+# }
+
+# # type Mutation{
+# #     addPerson(name : String! age : Int!) : Person!
+# #     deleteById(id : Int!) : Boolean!
+# # }
+
+type Movie {
+  id: Int!
+  title: String!
+  rating: Float
+  description_intro: String
+  language: String
+  medium_cover_image: String
+  genres: [String]
 }
 
-type Query{
-    # ! 는 required 라는 의미.
-    # 한 '사람'만 보내는게 아니라, 여러 '사람' 을 보내기 때문에 array 안에 넣는거다.
-    people : [Person]!
-    person(id : Int!) : Person
+type Query {
+  movies(limit: Int, rating: Float): [Movie]!
+  movie(id: Int!): Movie
+  suggestions(id: Int!): [Movie]!
 }
 
-type Mutation{
-    addPerson(name : String! age : Int!) : Person!
-    deleteById(id : Int!) : Boolean!
-}
+# Movie 라는 type(객체)에 대해 정의하고
+# Query type 안에는 어떤 종류의 query 들이 있는지 작성해준다. express 로 치면 Router 라고 생각하면 되겠다. (각각의 url endpoint 에 대해 기능을 정의하니까)
+# 각각의 query 는 어떤 parameter 를 받고, 어떤 값을 반환하는지 정의해준다.

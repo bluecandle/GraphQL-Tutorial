@@ -1,46 +1,70 @@
-import fetch from "node-fetch";
-const API_URL = "https://yts.am/api/v2/list_movies.json";
+// import fetch from "node-fetch"; const API_URL =
+// "https://yts.am/api/v2/list_movies.json?"; export const getMovies = (limit,
+// rating) => {     let REQUEST_URL = API_URL;     if (limit > 0) {
+// REQUEST_URL += `limit=${limit}`;     }     if (rating > 0) {
+// REQUEST_URL += `&minimum_rating=${rating}`;     }     return
+// fetch(REQUEST_URL)         .then(res => res.json())         .then(json =>
+// json.data.movies); };
 
-export let people = [
-    {
-        id : 0,
-        name: 'jinyeong0',
-        age: 25,
-        gender: 'male'
-    }, {
-        id : 1,
-        name: 'jinyeong1',
-        age: 25,
-        gender: 'male'
-    }, {
-        id : 2,
-        name: 'jinyeong2',
-        age: 25,
-        gender: 'male'
-    }
-]
+import axios from "axios";
+const BASE_URL = "https://yts-proxy.now.sh/";
+const LIST_MOVIES_URL = `${BASE_URL}list_movies.json`;
+const MOVIE_DETAILS_URL = `${BASE_URL}movie_details.json`;
+const MOVIE_SUGGESTIONS_URL = `${BASE_URL}movie_suggestions.json`;
 
-export const getById = (id) =>{
-    const filteredPeople = people.filter(person => id === person.id)
-    return filteredPeople[0]
-}
+export const getMovies = async(limit, rating) => {
+    // const response = await axios(LIST_MOVIES_URL, {
+    //     params: {
+    //         limit,
+    //         minimum_rating: rating
+    //     }
+    // });
+    
+    // // 그냥 response 안에는 headers, ~~ 이런것 부터 시작.
+    // // console.log(response.data) 여기가 진짜 데이터 관련내용이 들어가기 시작하는 부분
+    // // console.log(response.data.data) 그 안에서도, 여기가 진짜 데이터가 들어있는 부분.
 
-export const deleteById = (id) =>{
-    const cleanedPeople = people.filter(person => id !== person.id)
-    if ( people.length > cleanedPeople.length){
-        people = cleanedPeople
-        return true
-    }else{
-        return false
-    }
-}
+    const {
+        data: {
+            data: {
+                movies
+            }
+        }
+    } = await axios(LIST_MOVIES_URL, {
+        params: {
+            limit,
+            minimum_rating: rating
+        }
+    });
+    return movies;
+};
 
-export const addPserson = (name,age)=>{
-    const newPerson = {
-        id : `${people.length+1}`,
-        name,
-        age
-    }
-    people.push(newPerson)
-    return newPerson
-}
+export const getMovie = async id => {
+    const {
+        data: {
+            data: {
+                movie
+            }
+        }
+    } = await axios(MOVIE_DETAILS_URL, {
+        params: {
+            movie_id: id
+        }
+    });
+    return movie;
+};
+
+export const getSuggestions = async id => {
+    const {
+        data: {
+            data: {
+                movies
+            }
+        }
+    } = await axios(MOVIE_SUGGESTIONS_URL, {
+        params: {
+            movie_id: id
+        }
+    });
+    return movies;
+};
