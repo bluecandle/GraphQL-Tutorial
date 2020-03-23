@@ -1,0 +1,18 @@
+type Person{
+    id : Int!
+    name : String!
+    age : Int!
+    gender:String!
+}
+
+type Query{
+    # ! 는 required 라는 의미.
+    # 한 '사람'만 보내는게 아니라, 여러 '사람' 을 보내기 때문에 array 안에 넣는거다.
+    people : [Person]!
+    person(id : Int!) : Person
+}
+
+type Mutation{
+    addPerson(name : String! age : Int!) : Person!
+    deleteById(id : Int!) : Boolean!
+}
